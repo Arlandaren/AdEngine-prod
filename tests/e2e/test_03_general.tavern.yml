@@ -1,0 +1,372 @@
+test_name: generalka
+stages:
+  - request:
+      method: GET
+      url: "{BASE_URL}/clients/898c4805-2ec8-4e88-99f1-922ae36bde8e"
+    response:
+      status_code: 200
+      json:
+        client_id: "898c4805-2ec8-4e88-99f1-922ae36bde8e"
+        login: !anything
+        age: !anything
+        location: !anything
+        gender: !anything
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/clients/bulk"
+      json:
+        - client_id: "898c4805-2ec8-4e88-99f1-922ae36bde8e"
+          login: "client_one"
+          age: 30
+          location: "New York"
+          gender: "MALE"
+        - client_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          login: "client_two"
+          age: 25
+          location: "Los Angeles"
+          gender: "FEMALE"
+    response:
+      status_code: 201
+      json:
+        - client_id: "898c4805-2ec8-4e88-99f1-922ae36bde8e"
+          login: "client_one"
+          age: 30
+          location: "New York"
+          gender: "MALE"
+        - client_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          login: "client_two"
+          age: 25
+          location: "Los Angeles"
+          gender: "FEMALE"
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+    response:
+      status_code: 200
+      json:
+        advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+        name: !anything
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/advertisers/bulk"
+      json:
+        - advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+          name: "Advertiser One"
+        - advertiser_id: "4efbfa76-581c-44c3-ac88-0c8dd31dc50f"
+          name: "Advertiser Two"
+    response:
+      status_code: 201
+      json:
+        - advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+          name: "Advertiser One"
+        - advertiser_id: "4efbfa76-581c-44c3-ac88-0c8dd31dc50f"
+          name: "Advertiser Two"
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/ml-scores"
+      json:
+        client_id: "898c4805-2ec8-4e88-99f1-922ae36bde8e"
+        advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+        score: 85
+    response:
+      status_code: 200
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns"
+      json:
+        impressions_limit: 1000
+        clicks_limit: 100
+        cost_per_impression: 0.5
+        cost_per_click: 1.0
+        ad_title: "Summer Sale"
+        ad_text: "Big discounts on summer collection"
+        start_date: 10
+        end_date: 20
+        targeting:
+          gender: "ALL"
+          age_from: 18
+          age_to: 65
+          location: "NY"
+    response:
+      status_code: 201
+      json:
+        campaign_id: "c228770f-dd83-4f43-bd37-25f50f5e6308"
+        advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+        impressions_limit: 1000
+        clicks_limit: 100
+        cost_per_impression: 0.5
+        cost_per_click: 1.0
+        ad_title: "Summer Sale"
+        ad_text: "Big discounts on summer collection"
+        start_date: 10
+        end_date: 20
+        targeting:
+          gender: "ALL"
+          age_from: 18
+          age_to: 65
+          location: "NY"
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns"
+      params:
+        size: 10
+        page: 1
+    response:
+      status_code: 200
+      json:
+        - campaign_id: "c228770f-dd83-4f43-bd37-25f50f5e6308"
+          advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+          impressions_limit: !anything
+          clicks_limit: !anything
+          cost_per_impression: !anything
+          cost_per_click: !anything
+          ad_title: !anything
+          ad_text: !anything
+          start_date: !anything
+          end_date: !anything
+          targeting: !anything
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns/c228770f-dd83-4f43-bd37-25f50f5e6308"
+    response:
+      status_code: 200
+      json:
+        campaign_id: "c228770f-dd83-4f43-bd37-25f50f5e6308"
+        advertiser_id: "ee30cf94-51f9-4e8d-ac05-2b86d4a1809c"
+
+  - request:
+      method: PUT
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns/c228770f-dd83-4f43-bd37-25f50f5e6308"
+      json:
+        impressions_limit: 1200
+        clicks_limit: 110
+        cost_per_impression: 0.55
+        cost_per_click: 1.1
+        ad_title: "Updated Sale"
+        ad_text: "Updated discounts on summer collection"
+        start_date: 11
+        end_date: 21
+        targeting:
+          gender: "FEMALE"
+          age_from: 25
+          age_to: 50
+          location: "LA"
+    response:
+      status_code: 200
+      json:
+        campaign_id: "c228770f-dd83-4f43-bd37-25f50f5e6308"
+        impressions_limit: 1200
+        clicks_limit: 110
+        cost_per_impression: 0.55
+        cost_per_click: 1.1
+        ad_title: "Updated Sale"
+        ad_text: "Updated discounts on summer collection"
+        start_date: 11
+        end_date: 21
+        targeting:
+          gender: "FEMALE"
+          age_from: 25
+          age_to: 50
+          location: "LA"
+
+  - request:
+      method: DELETE
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns/c228770f-dd83-4f43-bd37-25f50f5e6308"
+    response:
+      status_code: 204
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/ads"
+      params:
+        client_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    response:
+      status_code: 200
+      json:
+        ad_id: !anything
+        ad_title: !anything
+        ad_text: !anything
+        advertiser_id: !anything
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/ads/4cf7574f-c896-4f2c-8fb1-6e8368cfd99c/click"
+      json:
+        client_id: "898c4805-2ec8-4e88-99f1-922ae36bde8e"
+    response:
+      status_code: 204
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/stats/campaigns/c228770f-dd83-4f43-bd37-25f50f5e6308"
+    response:
+      status_code: 200
+      json:
+        impressions_count: !anything
+        clicks_count: !anything
+        conversion: !anything
+        spent_impressions: !anything
+        spent_clicks: !anything
+        spent_total: !anything
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/stats/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns"
+    response:
+      status_code: 200
+      json:
+        impressions_count: !anything
+        clicks_count: !anything
+        conversion: !anything
+        spent_impressions: !anything
+        spent_clicks: !anything
+        spent_total: !anything
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/stats/campaigns/c228770f-dd83-4f43-bd37-25f50f5e6308/daily"
+    response:
+      status_code: 200
+      json:
+        - date: !anything
+          impressions_count: !anything
+          clicks_count: !anything
+          conversion: !anything
+          spent_impressions: !anything
+          spent_clicks: !anything
+          spent_total: !anything
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/stats/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns/daily"
+    response:
+      status_code: 200
+      json:
+        - date: !anything
+          impressions_count: !anything
+          clicks_count: !anything
+          conversion: !anything
+          spent_impressions: !anything
+          spent_clicks: !anything
+          spent_total: !anything
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/time/advance"
+      json:
+        current_date: 15
+    response:
+      status_code: 200
+      json:
+        current_date: 15
+
+  # Negative Tests
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/clients/00000000-0000-0000-0000-000000000000"
+    response:
+      status_code: 404
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/clients/bulk"
+      json:
+        - client_id: "4cf7574f-c896-4f2c-8fb1-6e8368cfd99c"
+          login: "incomplete_client"
+          age: 40
+          location: "Chicago"
+    response:
+      status_code: 400
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/ml-scores"
+      json:
+        client_id: "a96dffad-d61c-41b2-a2b7-c89cc4eba97d"
+        advertiser_id: "4efbfa76-581c-44c3-ac88-0c8dd31dc50f"
+    response:
+      status_code: 400
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns"
+      json:
+        impressions_limit: 500
+        clicks_limit: 50
+        cost_per_impression: 0.8
+        cost_per_click: 1.5
+        ad_title: "Invalid Date Campaign"
+        ad_text: "This campaign has wrong date settings"
+        start_date: 20
+        end_date: 10
+        targeting:
+          gender: "ALL"
+          age_from: 20
+          age_to: 40
+          location: "Miami"
+    response:
+      status_code: 400
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns"
+      json:
+        impressions_limit: 800
+        clicks_limit: 80
+        cost_per_impression: 0.6
+        cost_per_click: 1.2
+        ad_title: "No Targeting Campaign"
+        ad_text: "Campaign without targeting information"
+        start_date: 5
+        end_date: 15
+    response:
+      status_code: 400
+
+  - request:
+      method: PUT
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns/c228770f-dd83-4f43-bd37-25f50f5e6308"
+      json: {}
+    response:
+      status_code: 400
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/ads"
+    response:
+      status_code: 400
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/ads/4cf7574f-c896-4f2c-8fb1-6e8368cfd99c/click"
+      json:
+        client_id: "invalid-uuid"
+    response:
+      status_code: 400
+
+  - request:
+      method: POST
+      url: "{BASE_URL}/time/advance"
+      json:
+        current_date: "fifteen"
+    response:
+      status_code: 400
+
+  - request:
+      method: GET
+      url: "{BASE_URL}/advertisers/not-a-valid-uuid"
+    response:
+      status_code: 400
+
+  - request:
+      method: DELETE
+      url: "{BASE_URL}/advertisers/ee30cf94-51f9-4e8d-ac05-2b86d4a1809c/campaigns/00000000-0000-0000-0000-000000000000"
+    response:
+      status_code: 404

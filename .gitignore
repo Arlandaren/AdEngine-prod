@@ -1,0 +1,17 @@
+../.idea
+**/.idea/
+backend/external/
+**/external/
+loki-data/
+**/loki-data/
+.idea
+/.idea
+minio-data/
+**/minio-data/
+
+
+**/myenv/
+**/myenv/*
+.idea
+
+.env

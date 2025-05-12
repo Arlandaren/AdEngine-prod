@@ -1,0 +1,68 @@
+test_name: Создание рекламодателей
+
+stages:
+  - name: "Создание 1 рекламодателя"
+    request:
+      url: "{BASE_URL}/advertisers/bulk"
+      method: POST
+      json:
+        - advertiser_id: d4f5a3b7-c0f4-4e6e-8c8e-123456789abc
+          name: "New Advertising PRO"
+    response:
+      status_code: 201
+      json:
+        - advertiser_id: d4f5a3b7-c0f4-4e6e-8c8e-123456789abc
+
+  - name: "Создание нескольких рекламодателей"
+    request:
+      url: "{BASE_URL}/advertisers/bulk"
+      method: POST
+      json:
+        - advertiser_id: e1f5c7d8-abc1-4b2d-9d5f-abcdef012345
+          name: "New Ad Agency"
+        - advertiser_id: f2a6d8b9-1234-4f56-b7c8-789abcdef012
+          name: "Creative Solutions LLC"
+    response:
+      status_code: 201
+      json:
+        - advertiser_id: e1f5c7d8-abc1-4b2d-9d5f-abcdef012345
+        - advertiser_id: f2a6d8b9-1234-4f56-b7c8-789abcdef012
+
+  - name: "Получение рекламодателя по ID"
+    request:
+      url: "{BASE_URL}/advertisers/d4f5a3b7-c0f4-4e6e-8c8e-123456789abc"
+      method: GET
+    response:
+      status_code: 200
+      json:
+        advertiser_id: d4f5a3b7-c0f4-4e6e-8c8e-123456789abc
+        name: "New Advertising PRO"
+
+  - name: "Создание 1 клиента"
+    request:
+      url: "{BASE_URL}/clients/bulk"
+      method: POST
+      json:
+        - client_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+          login: newclient
+          age: 25
+          location: Moscow
+          gender: FEMALE
+    response:
+      status_code: 201
+      json:
+        - client_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        - login: "client_new"
+        - age: 25
+        - location: "Moscow"
+
+  - name: "Изменение ML-Score"
+    request:
+      url: "{BASE_URL}/ml-scores"
+      method: POST
+      json:
+        client_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        advertiser_id: d4f5a3b7-c0f4-4e6e-8c8e-123456789abc
+        score: 750
+    response:
+      status_code: 200
